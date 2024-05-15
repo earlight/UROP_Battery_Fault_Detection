@@ -16,9 +16,9 @@ if torch.cuda.is_available():
 # training parameters
 INITIAL_LR = 0.001
 EPOCHS = 64
-BATCH_SIZE = 64
-HIDDEN_WIDTH = 128
-HIDDEN_DEPTH = 4
+BATCH_SIZE = 1024
+HIDDEN_WIDTH = 64
+HIDDEN_DEPTH = 8
 
 # Load the data
 brand = 3

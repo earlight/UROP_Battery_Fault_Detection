@@ -1,0 +1,5 @@
+.DS_Store
+data/brand1.csv
+data/brand2.csv
+data/brand3.csv
+*.csv

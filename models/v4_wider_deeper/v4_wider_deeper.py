@@ -9,20 +9,24 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.model_selection import train_test_split
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+if torch.cuda.is_available():
+    print("Using GPU:", torch.cuda.get_device_name(device))
+
 # training parameters
 INITIAL_LR = 0.001
-EPOCHS = 128
+EPOCHS = 64
 BATCH_SIZE = 64
 HIDDEN_WIDTH = 128
 HIDDEN_DEPTH = 4
 
 # Load the data
-brand = 2
+brand = 3
 df = pd.read_csv('data/brand%d.csv' % brand)
 
 # Process the data
 df = df.dropna().reset_index(drop=True)
-# df = df.sample(frac=0.01, random_state=99).reset_index(drop=True) # TODO: small sample for testing
+df = df.sample(frac=0.01, random_state=99).reset_index(drop=True) # TODO: small sample for testing
 df = df.drop(columns=['car'], axis=1)
 df = df.drop(columns=['charge_segment'], axis=1)
 
@@ -137,9 +141,12 @@ def model_train(model, X_train, y_train, X_val, y_val):
 # Split data into training, validation, and testing
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=88)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
+X_train, X_val, X_test = X_train.to(device), X_val.to(device), X_test.to(device)
+y_train, y_val, y_test = y_train.to(device), y_val.to(device), y_test.to(device)
 
 # Create the model
 model = Deep()
+model.to(device)
 train_accuracies, val_accuracies = model_train(model, X_train, y_train, X_val, y_val)
 
 # Save the model
@@ -162,8 +169,8 @@ plt.title("Train and Val Accuracy (Test Accuracy: %.6f)" % float(test_acc))
 plt.savefig('./models/v4_wider_deeper/results/' + model_timestamp + '_brand' + str(brand) + '.png')
 
 # Calculate ROC
-y_pred_test = y_pred_test.detach().numpy()
-y_test = y_test.numpy()
+y_pred_test = y_pred_test.cpu().detach().numpy()
+y_test = y_test.cpu().numpy()
 
 # Save test data
 test_data = pd.DataFrame(data={'y_pred_test': y_pred_test.flatten(), 'y_test': y_test.flatten()})

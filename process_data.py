@@ -10,7 +10,7 @@ from tqdm import tqdm
 start_time = time.time()
 
 DATASET_PATH = 'raw_data/'
-BRAND = 1
+BRAND = 3
 
 # load column names
 columns = torch.load(f'{DATASET_PATH}battery_brand{BRAND}/column.pkl')

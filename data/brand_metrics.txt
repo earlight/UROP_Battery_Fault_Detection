@@ -1,0 +1,4 @@
+Brand1 has 61M samples (476739 charge segments) with 96.4% 0s
+Brand2 has 24.8M samples (194245 charge segments) with 42.7% 0s
+Brand3 has 3.7M samples (29598 charge segments) with 94.0% 0s
+All 3 brands combined have 89.6M samples (700583 charge segments) with 81.4% 0s

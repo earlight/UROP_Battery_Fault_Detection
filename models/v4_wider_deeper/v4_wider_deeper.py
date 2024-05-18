@@ -12,21 +12,23 @@ from sklearn.model_selection import train_test_split
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 if torch.cuda.is_available():
     print("Using GPU:", torch.cuda.get_device_name(device))
+else:
+    print("Using CPU")
 
 # training parameters
 INITIAL_LR = 0.001
-EPOCHS = 64
-BATCH_SIZE = 1024
-HIDDEN_WIDTH = 64
-HIDDEN_DEPTH = 8
+EPOCHS = 40
+BATCH_SIZE = 64
+HIDDEN_WIDTH = 32
+HIDDEN_DEPTH = 4
 
 # Load the data
-brand = 3
+brand = 1
 df = pd.read_csv('data/brand%d.csv' % brand)
 
 # Process the data
 df = df.dropna().reset_index(drop=True)
-df = df.sample(frac=0.01, random_state=99).reset_index(drop=True) # TODO: small sample for testing
+# df = df.sample(frac=0.01, random_state=99).reset_index(drop=True) # TODO: small sample for testing
 df = df.drop(columns=['car'], axis=1)
 df = df.drop(columns=['charge_segment'], axis=1)
 
